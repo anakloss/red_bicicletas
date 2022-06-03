@@ -1,0 +1,18 @@
+extends ../layout
+
+block content
+  a(href="/bikes/create") Nueva Bicicleta
+  table.table 
+    thead 
+      tr 
+        th(scope='col') #
+        th(scope='col') Color
+        th(scope='col') Modelo
+        th(scope='col') Ubicación
+    tbody
+      each bici in bicis
+        tr
+          td(scope='row')= bici.id 
+          td= bici.color
+          td= bici.modelo
+          td= bici.ubicacion
