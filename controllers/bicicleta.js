@@ -32,7 +32,6 @@ exports.bicicleta_update_post = (req, res) => {
     bici.color = req.body.color;
     bici.modelo = req.body.modelo;
     bici.ubicacion = [req.body.lat, req.body.lng];
-    Bicicleta.updateB
 
     res.redirect('/bikes');
 }
