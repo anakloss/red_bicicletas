@@ -16,3 +16,10 @@ block content
           td= bici.color
           td= bici.modelo
           td= bici.ubicacion
+          td 
+            a(href=`bikes/${bici.id}/update`) Editar  
+          td 
+            form.inline(action=`bikes/${bici.id}/delete`, method="post") 
+              input(type="hidden", name="id", value=bici.id)
+              button.link-button(type="submit", name="submit_param", value="submit_value", class="btn")
+                = 'Eliminar' 
