@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "test": "jasmine",
     "start": "node ./bin/www",
     "devstart": "nodemon ./bin/www"
   },
@@ -15,6 +16,7 @@
     "pug": "^2.0.0-beta11"
   },
   "devDependencies": {
+    "jasmine": "^4.1.0",
     "nodemon": "^2.0.16"
   }
 }
