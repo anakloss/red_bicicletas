@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Reserva = require('./reserva.js');
+const Reserva = require('./reserva');
 const Schema = mongoose.Schema;
 
 var usuarioSchema = new Schema({

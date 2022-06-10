@@ -2,7 +2,7 @@ const moment = require('moment');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-var reservaSchema = Schema({
+var reservaSchema = new Schema({
     desde: Date,
     hasta: Date,
     bicicleta: {type: mongoose.Schema.Types.ObjectId, ref: 'Bicicleta'},

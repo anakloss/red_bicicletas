@@ -18,7 +18,7 @@ exports.usuario_create = (req, res) => {
 exports.usuario_reservar = (req, res) => {
     Usuario.findById(req.body.id, (err, usuario) => {
         console.log(usuario);
-        Usuario.reservar(req.body.bici_id, req.body.desde, req.body.hasta, (err) => {
+        usuario.reservar(req.body.bici_id, req.body.desde, req.body.hasta, (err) => {
             console.log('reserva !!!!');
             res.status(200).send();
         });
