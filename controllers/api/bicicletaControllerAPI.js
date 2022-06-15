@@ -10,7 +10,7 @@ exports.bicicleta_list = (req, res) => {
 
 exports.bicicleta_create = (req, res) => {
     let bici = new Bicicleta({
-        code: req.body.id, 
+        code: req.body.code, 
         color: req.body.color, 
         modelo: req.body.modelo
     });
@@ -24,19 +24,17 @@ exports.bicicleta_create = (req, res) => {
 }
 
 exports.bicicleta_delete = (req, res) => {
-    Bicicleta.removeById(req.body.id);
-
-    res.status(204).send();
+    Bicicleta.removeByCode(req.body.code, () => {
+        res.status(204).send();
+    });
 }
 
 exports.bicicleta_update = (req, res) => {
-    let bici = Bicicleta.findById(req.body.id);
-    bici.id = req.body.id;
-    bici.color = req.body.color;
-    bici.modelo = req.body.modelo;
-    bici.ubicacion = [req.body.lat, req.body.lng];
+    Bicicleta.findOneAndUpdate({"code": req.body.code}, req.body, {new: true}, (err, bici) => {
+        res.status(200).json({
+            bicicletas: bici
+        });
 
-    res.status(200).json({
-        bicicletas: bici
     });
+   
 }
