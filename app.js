@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var tokenRouter = require('./routes/token');
 var biciRouter = require('./routes/bicicletas');
 var biciAPIRouter = require('./routes/api/bicicletas');
 var userAPIRouter = require('./routes/api/usuarios');
@@ -33,6 +34,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/token', tokenRouter);
 app.use('/bikes', biciRouter);
 app.use('/api/bikes', biciAPIRouter);
 app.use('/api/users', userAPIRouter);
