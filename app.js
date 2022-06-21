@@ -6,6 +6,7 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var usuariosRouter = require('./routes/usuarios');
 var tokenRouter = require('./routes/token');
 var biciRouter = require('./routes/bicicletas');
 var biciAPIRouter = require('./routes/api/bicicletas');
@@ -33,7 +34,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// app.use('/users', usersRouter);
+app.use('/users', usuariosRouter);
 app.use('/token', tokenRouter);
 app.use('/bikes', biciRouter);
 app.use('/api/bikes', biciAPIRouter);

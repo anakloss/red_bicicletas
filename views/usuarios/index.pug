@@ -1,5 +1,7 @@
 extends ../layout
-  a.btn.btbn-success(href="/users/create") Nuevo Usuario
+
+block content
+  a.btn.btn-success(href="/users/create") Nuevo Usuario
 
   br
   br
@@ -26,4 +28,5 @@ extends ../layout
           td 
             form.inline(method="post", action="users/" + usuario.id + "/delete")
               input(type="hidden", name="id", value= usuario.id)
-              button.link-button.btn-danger(type="submit", name="submit_param", value=) 
+              button.link-button.btn-danger(type="submit", name="submit_param", value="submit_value", class="btn")
+                = 'Eliminar'

@@ -21,8 +21,8 @@ block content
           = errors.nombre.message 
     .form-group 
       label(for="email") Email: 
-      input#email.form-control(type="text", name="email", value=usuario.email, class=class=errors.email ? 'is-invalid' : '')
-      if errors. 
+      input#email.form-control(type="text", name="email", value=usuario.email, class=errors.email ? 'is-invalid' : '')
+      if errors.email
         small#emailHelp.text-danger
           = errors.email.message 
     .form-group 
@@ -33,10 +33,10 @@ block content
           = errors.password.message 
     .form-group 
       label(for="confirm_pwd") Confirmar Password: 
-      input#confirm_pwd.form-control(type="password", name="confirm_password", class=class=errors.confirm_password ? 'is-invalid' : '')
+      input#confirm_pwd.form-control(type="password", name="confirm_password", class=errors.confirm_password ? 'is-invalid' : '')
       if errors.confirm_password 
         small#confirm_passwordHelp.text-danger
           = errors.confirm_password.message 
-br
-br
-input.btn.btn-primary(type="submit", value="OK")
+    br
+    br
+    input.btn.btn-primary(type="submit", value="OK")
