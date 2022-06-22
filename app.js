@@ -1,18 +1,30 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const passport = require('./config/passport');
+const session = require('express-session');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
-var usuariosRouter = require('./routes/usuarios');
-var tokenRouter = require('./routes/token');
-var biciRouter = require('./routes/bicicletas');
-var biciAPIRouter = require('./routes/api/bicicletas');
-var userAPIRouter = require('./routes/api/usuarios');
+const indexRouter = require('./routes/index');
+const usersRouter = require('./routes/users');
+const usuariosRouter = require('./routes/usuarios');
+const tokenRouter = require('./routes/token');
+const biciRouter = require('./routes/bicicletas');
+const biciAPIRouter = require('./routes/api/bicicletas');
+const userAPIRouter = require('./routes/api/usuarios');
+
+
+const store = new session.MemoryStore;
 
 var app = express();
+app.use(session({
+  cookie: { maxAge: 240 * 60 * 60 * 1000 }, //time for cookie
+  store: store, //we save in store
+  saveUninitialized: true,
+  resave: 'true',
+  secret: 'red_bicicletas_!!!%&/&____234234' //Here you can put anything that is used to encrypt the cookie
+}));
 
 var mongoose = require('mongoose');
 
@@ -31,7 +43,47 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(passport.initialize())
+app.use(passport.session());
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/login', (req, res) => {
+  res.render('session/login');
+});
+app.post('/login', (req, res, next) => {
+  //method of passport
+  passport.authenticate('local', (err, usuario, info) => {
+    //if there is a error & continue with the next method of middleware
+    if(err) return next(err);
+    //if there is not a user return back to the same page(login) 
+    if(!usuario) return res.render('session/login', {info});
+    req.logIn(usuario, err =>{
+      if(err) return next(err);
+      //if everthing is ok redirect to bicicletas
+      return res.redirect('/bikes');
+    });
+  })
+   (req, res, next);//we execute the passport.authenticate function in order to passport has reference to req, res, next
+});
+app.get('/logout', (req, res) => {
+  req.logOut();
+  res.redirect('/');
+});
+app.get('/forgotPassword', (req, res) => {
+  res.render('session/gorgotPassword');
+});
+app.post('/forgotPassword', (req, res) => {
+  Usuario.findOne({email: req.body.email}, (err, usuario) => {
+    if(!usuario) return res.render('session/forgotPassword', {info: {message: 'No existe la clave'}});
+    
+    usuario.resetPassword(err => {
+      if(err) return next(err);
+      console.log('session/forgotPasswordMessage');
+    })
+    res.render('session/forgotPasswordMessage');
+  })
+});
+
 
 app.use('/', indexRouter);
 // app.use('/users', usersRouter);
