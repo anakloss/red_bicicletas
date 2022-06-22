@@ -117,7 +117,8 @@ app.use('/', indexRouter);
 // app.use('/users', usersRouter);
 app.use('/users', usuariosRouter);
 app.use('/token', tokenRouter);
-app.use('/bikes', biciRouter);
+
+app.use('/bikes', loggedIn, biciRouter);
 app.use('/api/bikes', biciAPIRouter);
 app.use('/api/users', userAPIRouter);
 
@@ -136,5 +137,14 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+function loggedIn(req, res, next) {
+  if (req.user) {
+    next();
+  } else {
+    console.log('user sin loguearse');
+    res.redirect('/login');
+  }
+};
 
 module.exports = app;
