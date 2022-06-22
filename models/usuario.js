@@ -1,11 +1,10 @@
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
+const Reserva = require('./reserva');
+const Token = require('./token');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const Reserva = require('./reserva');
-const { token } = require('morgan');
-
-const Token = require('../models/token');
+// const { token } = require('morgan');
 const mailer = require('../mailer/mailer');
 
 const saltRounds = 10;
@@ -65,7 +64,7 @@ usuarioSchema.methods.reservar = function(biciId, desde, hasta, cb) {
 }
 
 usuarioSchema.methods.enviar_email_bienvenida = function(cb) {
-    const token = new token({_userId: this.id, token: crypto.randomBytes(16).toString('hex')});
+    const token = new Token({_userId: this.id, token: crypto.randomBytes(16).toString('hex')});
     const email_destination = this.email;
     token.save(function(err) {
         if (err) { return console.log(err.message); }
