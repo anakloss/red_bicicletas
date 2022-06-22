@@ -6,13 +6,14 @@ passport.use(
     new LocalStrategy({ 
         usernameField: 'email',    // define the parameter in req.body that passport can use as username and password
         passwordField: 'password'
-    }, (email, password, done) => {
+    },
+    (email, password, done) => {
         //we search the user by his/her email
-        Usuario.findOne({email: email}, (err, usuario)=>{
+        Usuario.findOne({email: email}, (err, usuario) => {
             //If there is a error
-            if(err) return done(err)
+            if (err) return done(err);
             //If there is not user with that email
-            if(!usuario) return done(null, false, {message: 'Email no existente o incorrecto'});
+            if (!usuario) return done(null, false, {message: 'Email no existente o incorrecto'});
             //Is password is not valid
             if (!usuario.validPassword(password)) return done(null, false, {message: 'Password no existente o incorrecto'});
 
