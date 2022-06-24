@@ -9,7 +9,7 @@ exports.usuario_list = (req, res) => {
 };
 
 exports.usuario_create = (req, res) => {
-    let usuario = new Usuario({nombre: req.body.nombre});
+    let usuario = new Usuario({nombre: req.body.nombre, email: req.body.email, password: req.body.password});
     usuario.save((err) => {
         res.status(200).json(usuario);
     });

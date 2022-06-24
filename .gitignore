@@ -1,10 +1,8 @@
 # These are some examples of commonly ignored file patterns.
 # You should customize this list as applicable to your project.
-<<<<<<< HEAD
-=======
-# Learn more about .gitignore:
-#     https://www.atlassian.com/git/tutorials/saving-changes/gitignore
->>>>>>> 4792caaf5db42c207ed5c8577a5a213e90dd50d4
+
+# Variables de ambiente
+.env
 
 # Node artifact files
 node_modules/
@@ -49,9 +47,4 @@ Thumbs.db
 *.avi
 *.flv
 *.mov
-<<<<<<< HEAD
 *.wmv
-=======
-*.wmv
-
->>>>>>> 4792caaf5db42c207ed5c8577a5a213e90dd50d4

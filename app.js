@@ -1,3 +1,4 @@
+require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -34,7 +35,9 @@ app.use(session({
 
 var mongoose = require('mongoose');
 
-var mongoDB = 'mongodb://localhost/red_bicicletas';
+// var mongoDB = 'mongodb://localhost/red_bicicletas';
+// var mongoDB = 'mongodb+srv://admin:adminpass@reddebicis.7v9ra.mongodb.net/?retryWrites=true&w=majority';
+var mongoDB = process.env.MONGO_URI;
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
 var db = mongoose.connection;
@@ -119,8 +122,8 @@ app.post('/resetPassword', (req, res) => {
 
 app.use('/', indexRouter);
 // app.use('/users', usersRouter);
-app.use('/users', usuariosRouter);
-app.use('/token', tokenRouter);
+app.use('/users', loggedIn, usuariosRouter);
+app.use('/token', loggedIn, tokenRouter);
 
 app.use('/bikes', loggedIn, biciRouter);
 app.use('/api/bikes', validarUsuario, biciAPIRouter);
