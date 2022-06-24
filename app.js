@@ -120,15 +120,15 @@ app.post('/resetPassword', (req, res) => {
 });
 
 
-app.use('/', indexRouter);
-// app.use('/users', usersRouter);
-app.use('/users', loggedIn, usuariosRouter);
-app.use('/token', loggedIn, tokenRouter);
+app.use("/", indexRouter);
+// app.use("/users", usersRouter);
+app.use("/users", loggedIn, usuariosRouter);
+app.use("/token", loggedIn, tokenRouter);
 
-app.use('/bikes', loggedIn, biciRouter);
-app.use('/api/bikes', validarUsuario, biciAPIRouter);
-app.use('/api/auth', authAPIRouter);
-app.use('/api/users', userAPIRouter);
+app.use("/bikes", loggedIn, biciRouter);
+app.use("/api/bikes", validarUsuario, biciAPIRouter);
+app.use("/api/auth", authAPIRouter);
+app.use("/api/users", userAPIRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
