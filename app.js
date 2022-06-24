@@ -4,8 +4,9 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-const session = require("express-session");
 const jwt = require("jsonwebtoken");
+const session = require("express-session");
+const MongoDBStore = require('connect-mongodb-session')(session);
 
 const passport = require("./config/passport");
 const Usuario = require("./models/usuario");
@@ -19,8 +20,20 @@ const biciAPIRouter = require("./routes/api/bicicletas");
 const authAPIRouter = require("./routes/api/auth");
 const userAPIRouter = require("./routes/api/usuarios");
 
+let store;
+if (process.env.NODE_ENV === 'development') {
+  store = new session.MemoryStore;
+} else {
+  store = new MongoDBStore({
+    uri: process.env.MONGO_URI,
+    collection: 'sessions'
+  });
+  store.on('error', (error) => {
+    assert.ifError(error);
+    assert.ok(false);
+  });
+}
 
-const store = new session.MemoryStore;
 var app = express();
 
 app.set("secretKey", "jwt_pwd_12rfd34");
@@ -34,9 +47,8 @@ app.use(session({
 }));
 
 var mongoose = require("mongoose");
+const { assert } = require("console");
 
-// var mongoDB = "mongodb://localhost/red_bicicletas";
-// var mongoDB = "mongodb+srv://admin:adminpass@reddebicis.7v9ra.mongodb.net/?retryWrites=true&w=majority";
 var mongoDB = process.env.MONGO_URI;
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 mongoose.Promise = global.Promise;
@@ -129,6 +141,19 @@ app.use("/bikes", loggedIn, biciRouter);
 app.use("/api/bikes", validarUsuario, biciAPIRouter);
 app.use("/api/auth", authAPIRouter);
 app.use("/api/users", userAPIRouter);
+
+app.use("/auth/google",
+  passport.authenticate("google", {scope: [
+    'https://www.googleapis.com/auth/plus.login',
+    'https://www.googleapis.com/auth/plus.profile.emails.read'
+  ]})
+);
+app.get("/auth/google/callback",
+  passport.authenticate("google", {
+    successRedirect: "/",
+    failureRedirect: "/error"
+  })
+);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
