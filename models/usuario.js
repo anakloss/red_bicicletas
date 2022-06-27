@@ -106,10 +106,11 @@ usuarioSchema.methods.resetPassword =  function(cb){
 }
 
 usuarioSchema.statics.findOneOrCreateByGoogle = function findOneOrCreate(condition, callback) {
+    const self = this;
     console.log(condition);
-    this.findOne({
+    self.findOne({
         $or: [
-            {'googleId': condition.id}, {'email': condition.emails[0].value}
+            {googleId: condition.id}, {email: condition.emails[0].value}
         ]
     },
     (err, result) => {
@@ -126,7 +127,7 @@ usuarioSchema.statics.findOneOrCreateByGoogle = function findOneOrCreate(conditi
             values.password = condition._json.etag;
             console.log('========== VALUES ==========');
             console.log(values);
-            this.create(values, (err, result) => {
+            self.create(values, (err, result) => {
                 if (err) {console.log(err)}
                 return callback(err, result);
             });
