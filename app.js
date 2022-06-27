@@ -149,10 +149,11 @@ app.get('/auth/google',
   ]})
 );
 app.get('/auth/google/callback',
-  passport.authenticate('google', {
-    successRedirect: '/',
-    failureRedirect: '/error'
-  })
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function(req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  }
 );
 
 // catch 404 and forward to error handler
