@@ -1,5 +1,5 @@
 require('dotenv').config();
-// const assert = require('assert');
+const assert = require('assert').strict;
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -48,7 +48,6 @@ app.use(session({
 }));
 
 var mongoose = require('mongoose');
-const { assert } = require('console');
 
 var mongoDB = process.env.MONGO_URI;
 mongoose.connect(mongoDB, { useNewUrlParser: true });
@@ -86,9 +85,11 @@ app.post('/login', (req, res, next) => {
   }) (req, res, next); //we execute the passport.authenticate function in order to passport has reference to req, res, next
 });
 
-app.get('/logout', (req, res) => {
-  req.logOut();
-  res.redirect('/');
+app.get('/logout', (req, res, next) => {
+  req.logOut((err) => {
+    if (err) return next(err);
+    res.redirect('/');
+  });
 });
 
 app.get('/forgotPassword', (req, res) => {
