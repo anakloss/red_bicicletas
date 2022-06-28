@@ -7,6 +7,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const jwt = require('jsonwebtoken');
 const session = require('express-session');
+const mongoose = require('mongoose');
 const MongoDBStore = require('connect-mongodb-session')(session);
 
 const passport = require('./config/passport');
@@ -46,8 +47,6 @@ app.use(session({
   resave: 'true',
   secret: 'red_bicicletas_!!!%&/&____234234' //Here you can put anything that is used to encrypt the cookie
 }));
-
-var mongoose = require('mongoose');
 
 var mongoDB = process.env.MONGO_URI;
 mongoose.connect(mongoDB, { useNewUrlParser: true });
@@ -145,11 +144,19 @@ app.use('/api/auth', authAPIRouter);
 app.use('/api/users', userAPIRouter);
 
 app.get('/auth/google',
-  passport.authenticate('google', {scope: [
-    'https://www.googleapis.com/auth/plus.login',
-    'https://www.googleapis.com/auth/plus.profile.emails.read'
-  ]})
+  passport.authenticate('google', {
+    scope: [
+      'https://www.googleapis.com/auth/userinfo.profile',
+      'https://www.googleapis.com/auth/userinfo.email'
+    ]
+  })
 );
+// app.get('/auth/google',
+//   passport.authenticate('google', {scope: [
+//     'https://www.googleapis.com/auth/plus.login',
+//     'https://www.googleapis.com/auth/plus.profile.emails.read'
+//   ]})
+// );
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
   function(req, res) {
