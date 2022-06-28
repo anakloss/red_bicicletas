@@ -109,7 +109,7 @@ usuarioSchema.statics.findOneOrCreateByGoogle = function findOneOrCreate(conditi
     const self = this;
     console.log(condition);
     self.findOne({
-        $or: [{'googleId': condition.id}, {'email': condition.emails[0].value}]
+        $or: [{'googleId': condition.id}]  // {'email': condition.emails.value}]
     }, (err, result) => {
         if (result) {
             callback(err, result);
@@ -118,7 +118,7 @@ usuarioSchema.statics.findOneOrCreateByGoogle = function findOneOrCreate(conditi
             console.log(condition);
             let values = {};
             values.googleId = condition.id;
-            values.email = condition.emails[0].value;
+            // values.email = condition.emails.value;
             values.nombre = condition.displayName || 'SIN NOMBRE';
             values.verificado = true;
             values.password = condition._json.etag;
